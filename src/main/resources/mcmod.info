@@ -1,0 +1,15 @@
+[
+  {
+    "modid": "windvclient",
+    "name": "Wind V Client",
+    "description": "WindVClient By WindV",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "authorList": ["WindV"],
+    "credits": "WindV",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
