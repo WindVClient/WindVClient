@@ -1,5 +1,6 @@
 package dev.windv.wvc.module.hud;
 
+import dev.windv.wvc.WVCMod;
 import dev.windv.wvc.module.WVCModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -20,11 +21,13 @@ public class ReachDisplayModule extends WVCModule {
     private final Minecraft mc = Minecraft.getMinecraft();
     private double lastReach = 0;
     private long lastAttackTime = 0;
-    private final DecimalFormat df = new DecimalFormat("0.00");
+    private final java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
+    private final dev.windv.wvc.settings.ColorSetting textColor;
 
     public ReachDisplayModule() {
         super("ReachDisplay", true);
-        this.setX(200);
+        this.addSetting(textColor = new dev.windv.wvc.settings.ColorSetting("Text Color", 255, 255, 255));
+        this.setX(10);
         this.setY(150);
     }
 
@@ -52,6 +55,6 @@ public class ReachDisplayModule extends WVCModule {
         if (System.currentTimeMillis() - lastAttackTime > 2000) return;
 
         String text = "Reach: " + df.format(lastReach) + " blocks";
-        mc.fontRendererObj.drawStringWithShadow(text, this.getX(), this.getY(), 0xFFFFFF);
+        WVCMod.INSTANCE.getFontRenderer().drawString(text, (float)this.getX(), (float)this.getY(), textColor.getColor());
     }
 }

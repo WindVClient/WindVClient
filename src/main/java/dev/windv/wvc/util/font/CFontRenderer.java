@@ -58,20 +58,23 @@ public class CFontRenderer extends CFont {
                 // Unicode fallback: Use Minecraft's default font renderer for non-ASCII characters
                 GL11.glEnd();
                 GL11.glPushMatrix();
-                GL11.glScaled(2.0, 2.0, 2.0); // CFont is scaled at 0.5, so we scale back for vanilla
+                GL11.glScaled(2.0, 2.0, 2.0);
+                // Ensure color is correctly applied for vanilla draw
+                GlStateManager.color(red, green, blue, alpha);
                 net.minecraft.client.Minecraft.getMinecraft().fontRendererObj.drawString(String.valueOf(c), (float) (currentX / 2.0), (float) (currentY / 2.0), color, false);
                 GL11.glPopMatrix();
+                
+                // Restore state for CFont
                 currentX += net.minecraft.client.Minecraft.getMinecraft().fontRendererObj.getCharWidth(c) * 2;
                 GlStateManager.bindTexture(tex.getGlTextureId());
                 GlStateManager.enableBlend();
+                GlStateManager.color(red, green, blue, alpha);
                 GL11.glBegin(GL11.GL_QUADS);
             }
         }
         GL11.glEnd();
         
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        // バニラのFontRendererが期待する状態を壊さないように、ここで無理にunbindしない
-
         GL11.glPopMatrix();
         return (float) x + getStringWidth(text);
     }

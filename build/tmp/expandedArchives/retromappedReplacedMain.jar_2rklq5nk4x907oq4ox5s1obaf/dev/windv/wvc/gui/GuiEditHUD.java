@@ -31,8 +31,8 @@ public class GuiEditHUD extends GuiScreen {
 
         // 有効なHUDモジュールをループ
         for (WVCModule m : WVCMod.INSTANCE.getModuleManager().getModules()) {
-            // HUD関連かつ有効なもののみ（簡易的に名前や種類で判別）
-            if (!m.isEnabled() || !isHUDModule(m)) continue;
+            // HUDエディタ内では、無効化されていても枠を表示して動かせるようにする
+            if (!isHUDModule(m)) continue;
 
             int x = m.getX();
             int y = m.getY();
@@ -41,9 +41,11 @@ public class GuiEditHUD extends GuiScreen {
             int w = field_146297_k.field_71466_p.func_78256_a(m.getName()) + 10;
             int h = 12;
             
-            if (m.getName().equals("Keystrokes")) { w = 70; h = 60; }
+            if (m.getName().equals("Keystrokes")) { w = 70; h = 82; }
             if (m.getName().equals("ArmorStatus")) { w = 40; h = 80; }
             if (m.getName().equals("PotionStatus")) { w = 80; h = 40; }
+            if (m.getName().equals("Location")) { w = 100; h = 22; }
+            if (m.getName().equals("TeamDisplay")) { w = 100; h = 45; }
             if (m.getName().equals("Scoreboard")) { w = 100; h = 120; x = x - w; } // xは右端なので左端を計算
             if (m.getName().equals("DirectionHUD")) { w = 40; h = 20; x = x - 20; }
             
@@ -57,7 +59,7 @@ public class GuiEditHUD extends GuiScreen {
             this.func_73728_b(x - 2, y - 2, y + h + 2, borderColor);
             this.func_73728_b(x + w + 2, y - 2, y + h + 2, borderColor);
             
-            field_146297_k.field_71466_p.func_175063_a(m.getName(), x, y, 0xFFFFFF);
+            WVCMod.INSTANCE.getFontRenderer().drawStringWithShadow(m.getName(), x, y, 0xFFFFFF);
         }
 
         super.func_73863_a(mouseX, mouseY, partialTicks);
@@ -67,16 +69,18 @@ public class GuiEditHUD extends GuiScreen {
     protected void func_73864_a(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
             for (WVCModule m : WVCMod.INSTANCE.getModuleManager().getModules()) {
-                if (!m.isEnabled() || !isHUDModule(m)) continue;
+                if (!isHUDModule(m)) continue;
                 
                 int x = m.getX();
                 int y = m.getY();
                 
                 int w = field_146297_k.field_71466_p.func_78256_a(m.getName()) + 10;
                 int h = 12;
-                if (m.getName().equals("Keystrokes")) { w = 70; h = 60; }
+                if (m.getName().equals("Keystrokes")) { w = 70; h = 82; }
                 if (m.getName().equals("ArmorStatus")) { w = 40; h = 80; }
                 if (m.getName().equals("PotionStatus")) { w = 80; h = 40; }
+                if (m.getName().equals("Location")) { w = 100; h = 22; }
+                if (m.getName().equals("TeamDisplay")) { w = 100; h = 45; }
                 if (m.getName().equals("Scoreboard")) { w = 100; h = 120; x = x - w; }
                 if (m.getName().equals("DirectionHUD")) { w = 40; h = 20; x = x - 20; }
 
@@ -109,9 +113,11 @@ public class GuiEditHUD extends GuiScreen {
             // モジュールサイズ取得（snapping用に必要）
             int w = field_146297_k.field_71466_p.func_78256_a(draggingModule.getName()) + 10;
             int h = 12;
-            if (draggingModule.getName().equals("Keystrokes")) { w = 70; h = 60; }
+            if (draggingModule.getName().equals("Keystrokes")) { w = 70; h = 82; }
             if (draggingModule.getName().equals("ArmorStatus")) { w = 40; h = 80; }
             if (draggingModule.getName().equals("PotionStatus")) { w = 80; h = 40; }
+            if (draggingModule.getName().equals("Location")) { w = 100; h = 22; }
+            if (draggingModule.getName().equals("TeamDisplay")) { w = 100; h = 45; }
             if (draggingModule.getName().equals("Scoreboard")) { w = 100; h = 120; }
             if (draggingModule.getName().equals("DirectionHUD")) { w = 40; h = 20; }
 
@@ -133,6 +139,8 @@ public class GuiEditHUD extends GuiScreen {
 
             if (draggingModule.getName().equals("Scoreboard")) {
                 draggingModule.setX(newX + w); // 右端を保存
+            } else if (draggingModule.getName().equals("DirectionHUD")) {
+                draggingModule.setX(newX + 20); // 中央を保存
             } else {
                 draggingModule.setX(newX);
             }
@@ -146,7 +154,7 @@ public class GuiEditHUD extends GuiScreen {
     private boolean isHUDModule(WVCModule m) {
         String n = m.getName();
         return n.equals("FPS") || n.equals("CPS") || n.equals("Ping") || n.equals("Keystrokes") || 
-               n.equals("ArmorStatus") || n.equals("PotionStatus") || n.equals("ReachDisplay") || n.equals("DirectionHUD") || n.equals("Scoreboard");
+               n.equals("ArmorStatus") || n.equals("PotionStatus") || n.equals("ReachDisplay") || n.equals("DirectionHUD") || n.equals("Scoreboard") || n.equals("Location") || n.equals("TeamDisplay");
     }
 
     @Override

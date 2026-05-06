@@ -1,5 +1,5 @@
 Symbol range map extraction starting
-Processing 47 files
+Processing 59 files
 processing dev\windv\wvc\WVCMod.java
 processing dev\windv\wvc\config\WVCConfig.java
 processing dev\windv\wvc\event\InputEventHandler.java
@@ -7,38 +7,50 @@ processing dev\windv\wvc\event\OldAnimationsExtraHandler.java
 processing dev\windv\wvc\event\OldAnimationsHandler.java
 processing dev\windv\wvc\event\OldItemRenderer.java
 processing dev\windv\wvc\event\RenderEventHandler.java
+processing dev\windv\wvc\gui\CustomGuiNewChat.java
 processing dev\windv\wvc\gui\GuiCrosshairEditor.java
 processing dev\windv\wvc\gui\GuiEditHUD.java
 processing dev\windv\wvc\gui\GuiWVCMainMenu.java
 processing dev\windv\wvc\gui\WVCGuiSettings.java
 processing dev\windv\wvc\module\ModuleManager.java
 processing dev\windv\wvc\module\WVCModule.java
+processing dev\windv\wvc\module\combat\AutoClickerModule.java
+processing dev\windv\wvc\module\combat\VelocityModule.java
 processing dev\windv\wvc\module\hud\ArmorStatusModule.java
 processing dev\windv\wvc\module\hud\BossbarModule.java
 processing dev\windv\wvc\module\hud\CpsModule.java
 processing dev\windv\wvc\module\hud\DirectionHUDModule.java
 processing dev\windv\wvc\module\hud\FpsModule.java
 processing dev\windv\wvc\module\hud\KeystrokesModule.java
+processing dev\windv\wvc\module\hud\LocationModule.java
 processing dev\windv\wvc\module\hud\PingModule.java
 processing dev\windv\wvc\module\hud\PotionStatusModule.java
 processing dev\windv\wvc\module\hud\ReachDisplayModule.java
 processing dev\windv\wvc\module\hud\ScoreboardModule.java
+processing dev\windv\wvc\module\hud\TeamDisplayModule.java
 processing dev\windv\wvc\module\movement\SprintModule.java
 processing dev\windv\wvc\module\movement\ToggleSneakModule.java
 processing dev\windv\wvc\module\movement\ZoomModule.java
+processing dev\windv\wvc\module\render\FullBrightModule.java
 processing dev\windv\wvc\module\system\AutoTextModule.java
 processing dev\windv\wvc\module\system\ChatConfirmationModule.java
+processing dev\windv\wvc\module\system\ChatMod.java
 processing dev\windv\wvc\module\system\JapaneseIMEModule.java
 processing dev\windv\wvc\module\system\ScreenshotManagerModule.java
+processing dev\windv\wvc\module\visual\BlockOverlayModule.java
 processing dev\windv\wvc\module\visual\CrosshairModule.java
 processing dev\windv\wvc\module\visual\EntityCullingModule.java
 processing dev\windv\wvc\module\visual\FullbrightModule.java
+processing dev\windv\wvc\module\visual\HitColorModule.java
+processing dev\windv\wvc\module\visual\ItemPhysicsModule.java
 processing dev\windv\wvc\module\visual\MotionBlurModule.java
 processing dev\windv\wvc\module\visual\NameTagModule.java
 processing dev\windv\wvc\module\visual\OldAnimationsModule.java
 processing dev\windv\wvc\module\visual\PerformanceModule.java
+processing dev\windv\wvc\module\visual\TimeChangerModule.java
 processing dev\windv\wvc\profile\ProfileManager.java
 processing dev\windv\wvc\render\HudRenderer.java
+processing dev\windv\wvc\render\ItemPhysicsRenderer.java
 processing dev\windv\wvc\settings\BooleanSetting.java
 processing dev\windv\wvc\settings\ColorSetting.java
 processing dev\windv\wvc\settings\KeybindSetting.java

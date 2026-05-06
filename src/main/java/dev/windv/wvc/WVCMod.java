@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
     name    = WVCMod.NAME,
     version = WVCMod.VERSION,
     clientSideOnly = true,
-    acceptedMinecraftVersions = "[1.8.9]"
+    acceptedMinecraftVersions = "*"
 )
 public class WVCMod {
 
@@ -77,15 +77,20 @@ public class WVCMod {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new dev.windv.wvc.event.InputEventHandler());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new dev.windv.wvc.event.OldAnimationsExtraHandler());
 
-        // プロ仕様：リフレクションを使用してマイクラの深層（ItemRenderer）を強制的にすり替え
+        // プロ仕様：リフレクションを使用してマイクラの深層（ItemRenderer, EntityItem）を強制的にすり替え
         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
         try {
+            // ItemRenderer (Block/Sword scale etc)
             net.minecraftforge.fml.relauncher.ReflectionHelper.setPrivateValue(
                 net.minecraft.client.renderer.EntityRenderer.class, 
                 mc.entityRenderer, 
                 new dev.windv.wvc.event.OldItemRenderer(mc, mc.getItemRenderer()), 
                 "itemRenderer", "field_78516_c"
             );
+            
+            // ItemPhysics (EntityItem Renderer)
+            mc.getRenderManager().entityRenderMap.put(net.minecraft.entity.item.EntityItem.class, new dev.windv.wvc.render.ItemPhysicsRenderer(mc.getRenderManager()));
+            
         } catch (Exception e) {
             LOGGER.error("[WVC] Failed to inject OldItemRenderer", e);
         }

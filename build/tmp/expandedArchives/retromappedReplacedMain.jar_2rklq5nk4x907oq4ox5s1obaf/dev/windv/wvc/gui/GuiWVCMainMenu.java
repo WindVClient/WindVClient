@@ -55,13 +55,13 @@ public class GuiWVCMainMenu extends GuiScreen {
         // 装飾的なオーバーレイ
         func_73734_a(0, 0, field_146294_l, field_146295_m, 0x33000000);
 
-        // ロゴ描画 (比率を 1:1 に固定し、大きく描画)
-        int logoSize = 180;
+        // ロゴ描画 (比率を 1732:980 に合わせて調整)
+        int logoW = 350; // 幅を350に拡大
+        int logoH = (int)(logoW * 980.0 / 1732.0); // 比率から高さを計算 (約198)
         field_146297_k.func_110434_K().func_110577_a(LOGO);
         GlStateManager.func_179147_l();
         GlStateManager.func_179131_c(1, 1, 1, 1);
-        // 比率が崩れないよう、正方形で描画（生成されたロゴは1:1のため）
-        Gui.func_146110_a(field_146294_l / 2 - logoSize / 2, field_146295_m / 2 - logoSize - 40, 0, 0, logoSize, logoSize, logoSize, logoSize);
+        Gui.func_146110_a(field_146294_l / 2 - logoW / 2, field_146295_m / 2 - logoH - 60, 0, 0, logoW, logoH, logoW, logoH);
 
         // クライアント情報 (Tahoma使用)
         String title = "Wind V Client v" + WVCMod.VERSION;
@@ -87,7 +87,7 @@ public class GuiWVCMainMenu extends GuiScreen {
         if (button.field_146127_k == 11) openURL("https://note.com/wind_v_2233");
         if (button.field_146127_k == 12) openURL("https://github.com/WindVClient");
         if (button.field_146127_k == 13) openURL("https://windvclient.pages.dev");
-        if (button.field_146127_k == 14) openURL("https://discord.gg/cYxScVkeKy");
+        if (button.field_146127_k == 14) openURL("https://discord.gg/UZSuVEGN");
     }
 
     private void openURL(String url) {

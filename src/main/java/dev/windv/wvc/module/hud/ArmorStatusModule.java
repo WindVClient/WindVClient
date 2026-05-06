@@ -71,7 +71,7 @@ public class ArmorStatusModule extends WVCModule {
                     if (percent < 0.2) color = 0xFF5555;
                     else if (percent < 0.5) color = 0xFFFF55;
                     
-                    mc.fontRendererObj.drawStringWithShadow(s, 0, 0, color);
+                    dev.windv.wvc.WVCMod.INSTANCE.getFontRenderer().drawStringWithShadow(s, 0, 0, color);
                     GlStateManager.popMatrix();
                 }
                 

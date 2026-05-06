@@ -55,13 +55,13 @@ public class GuiWVCMainMenu extends GuiScreen {
         // 装飾的なオーバーレイ
         drawRect(0, 0, width, height, 0x33000000);
 
-        // ロゴ描画 (比率を 1:1 に固定し、大きく描画)
-        int logoSize = 180;
+        // ロゴ描画 (比率を 1732:980 に合わせて調整)
+        int logoW = 350; // 幅を350に拡大
+        int logoH = (int)(logoW * 980.0 / 1732.0); // 比率から高さを計算 (約198)
         mc.getTextureManager().bindTexture(LOGO);
         GlStateManager.enableBlend();
         GlStateManager.color(1, 1, 1, 1);
-        // 比率が崩れないよう、正方形で描画（生成されたロゴは1:1のため）
-        Gui.drawModalRectWithCustomSizedTexture(width / 2 - logoSize / 2, height / 2 - logoSize - 40, 0, 0, logoSize, logoSize, logoSize, logoSize);
+        Gui.drawModalRectWithCustomSizedTexture(width / 2 - logoW / 2, height / 2 - logoH - 60, 0, 0, logoW, logoH, logoW, logoH);
 
         // クライアント情報 (Tahoma使用)
         String title = "Wind V Client v" + WVCMod.VERSION;
@@ -87,7 +87,7 @@ public class GuiWVCMainMenu extends GuiScreen {
         if (button.id == 11) openURL("https://note.com/wind_v_2233");
         if (button.id == 12) openURL("https://github.com/WindVClient");
         if (button.id == 13) openURL("https://windvclient.pages.dev");
-        if (button.id == 14) openURL("https://discord.gg/cYxScVkeKy");
+        if (button.id == 14) openURL("https://discord.gg/UZSuVEGN");
     }
 
     private void openURL(String url) {

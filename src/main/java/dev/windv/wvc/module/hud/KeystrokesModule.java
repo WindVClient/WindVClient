@@ -36,25 +36,35 @@ public class KeystrokesModule extends WVCModule {
         int x = this.getX();
         int y = this.getY();
 
-        // Key Layout Configuration
+        // WASD
         drawKey(mc.gameSettings.keyBindForward, x + 22, y, 20, 20);      // W
         drawKey(mc.gameSettings.keyBindLeft,    x,      y + 22, 20, 20); // A
         drawKey(mc.gameSettings.keyBindBack,    x + 22, y + 22, 20, 20); // S
         drawKey(mc.gameSettings.keyBindRight,   x + 44, y + 22, 20, 20); // D
-        drawKey(mc.gameSettings.keyBindJump,    x,      y + 44, 64, 12); // Space (Wait! 20*3+4=64)
+
+        // Mouse Buttons (LMB / RMB)
+        drawMouseKey(0, x, y + 44, 31, 20, "LMB");
+        drawMouseKey(1, x + 33, y + 44, 31, 20, "RMB");
+
+        // Space
+        drawKey(mc.gameSettings.keyBindJump,    x,      y + 66, 64, 12); // Space
     }
 
     private void drawKey(KeyBinding key, int x, int y, int width, int height) {
         boolean pressed = key.isKeyDown();
-        int color = pressed ? pressColor.getColor() : 0x44000000;
-        
-        // Draw Key Background
-        Gui.drawRect(x, y, x + width, y + height, color);
-        
-        // Draw Key Name (Centered)
-        String name = Keyboard.getKeyName(key.getKeyCode());
+        String name = org.lwjgl.input.Keyboard.getKeyName(key.getKeyCode());
         if (key == Minecraft.getMinecraft().gameSettings.keyBindJump) name = "-------";
-        
+        renderButton(pressed, x, y, width, height, name);
+    }
+
+    private void drawMouseKey(int button, int x, int y, int width, int height, String name) {
+        boolean pressed = org.lwjgl.input.Mouse.isButtonDown(button);
+        renderButton(pressed, x, y, width, height, name);
+    }
+
+    private void renderButton(boolean pressed, int x, int y, int width, int height, String name) {
+        int color = pressed ? pressColor.getColor() : 0x60000000;
+        Gui.drawRect(x, y, x + width, y + height, color);
         WVCMod.INSTANCE.getFontRenderer().drawCenteredString(name, x + width / 2, y + height / 2 - 4, textColor.getColor());
     }
 }

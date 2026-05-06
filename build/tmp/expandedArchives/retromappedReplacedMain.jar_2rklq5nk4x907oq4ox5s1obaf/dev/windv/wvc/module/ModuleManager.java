@@ -8,10 +8,12 @@ import dev.windv.wvc.module.hud.CpsModule;
 import dev.windv.wvc.module.hud.DirectionHUDModule;
 import dev.windv.wvc.module.hud.FpsModule;
 import dev.windv.wvc.module.hud.KeystrokesModule;
+import dev.windv.wvc.module.hud.LocationModule;
 import dev.windv.wvc.module.hud.PingModule;
 import dev.windv.wvc.module.hud.PotionStatusModule;
 import dev.windv.wvc.module.hud.ReachDisplayModule;
 import dev.windv.wvc.module.hud.ScoreboardModule;
+import dev.windv.wvc.module.hud.TeamDisplayModule;
 import dev.windv.wvc.module.movement.SprintModule;
 import dev.windv.wvc.module.movement.ToggleSneakModule;
 import dev.windv.wvc.module.movement.ZoomModule;
@@ -26,6 +28,10 @@ import dev.windv.wvc.module.visual.MotionBlurModule;
 import dev.windv.wvc.module.visual.NameTagModule;
 import dev.windv.wvc.module.visual.OldAnimationsModule;
 import dev.windv.wvc.module.visual.PerformanceModule;
+import dev.windv.wvc.module.visual.BlockOverlayModule;
+import dev.windv.wvc.module.visual.TimeChangerModule;
+import dev.windv.wvc.module.visual.HitColorModule;
+import dev.windv.wvc.module.visual.ItemPhysicsModule;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -53,6 +59,8 @@ public class ModuleManager {
         register(new DirectionHUDModule());
         register(new BossbarModule());
         register(new ScoreboardModule());
+        register(new LocationModule());
+        register(new TeamDisplayModule());
 
         // --- 移動系 ---
         register(new SprintModule());
@@ -60,16 +68,21 @@ public class ModuleManager {
         register(new ToggleSneakModule());
 
         // --- ビジュアル系 ---
-        register(new FullbrightModule(false));
-        register(new PerformanceModule(true));
-        register(new MotionBlurModule(false));
-        register(new OldAnimationsModule(true));
         register(new CrosshairModule());
+        register(new FullbrightModule(false));
+        register(new MotionBlurModule(false));
         register(new EntityCullingModule());
         register(new NameTagModule());
+        register(new OldAnimationsModule(true));
+        register(new PerformanceModule(true));
+        register(new BlockOverlayModule());
+        register(new TimeChangerModule());
+        register(new HitColorModule());
+        register(new ItemPhysicsModule());
 
         // --- システム系 ---
         register(new JapaneseIMEModule());
+        register(new dev.windv.wvc.module.system.ChatMod());
         register(new ScreenshotManagerModule());
         register(new ChatConfirmationModule());
         register(new AutoTextModule());

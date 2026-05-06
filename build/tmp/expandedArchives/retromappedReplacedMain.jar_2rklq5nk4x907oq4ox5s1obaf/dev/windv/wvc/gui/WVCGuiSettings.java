@@ -12,7 +12,7 @@ import dev.windv.wvc.settings.SliderSetting;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -31,6 +31,8 @@ public class WVCGuiSettings extends GuiScreen {
     private String selectedCategory = "ALL";
     private WVCModule selectedModule = null;
     private KeybindSetting listeningKeybind = null;
+    private String searchQuery = "";
+    private boolean listeningSearch = false;
     
     // スクロール制御
     private int scrollOffset = 0;
@@ -89,6 +91,18 @@ public class WVCGuiSettings extends GuiScreen {
         int ehY = py + 12;
         boolean ehHov = mouseX >= ehX && mouseX <= ehX + ehW && mouseY >= ehY && mouseY <= ehY + ehH;
         drawRoundedRect(ehX, ehY, ehX + ehW, ehY + ehH, 6, ehHov ? adjustBrightness(getAccentColor(), 1.2f) : getAccentColor());
+
+        // 検索バー (Edit HUDの左)
+        int sw = 120; int sh = 22;
+        int sx = ehX - sw - 10;
+        int sy = py + 12;
+        drawRoundedRect(sx, sy, sx + sw, sy + sh, 6, listeningSearch ? 0x44FFFFFF : 0x22FFFFFF);
+        String searchDisplay = searchQuery.isEmpty() ? (listeningSearch ? "" : "Search...") : searchQuery + (listeningSearch && (System.currentTimeMillis() % 1000 < 500) ? "_" : "");
+        WVCMod.INSTANCE.getFontRenderer().drawString(searchDisplay, sx + 8, sy + 6, searchQuery.isEmpty() && !listeningSearch ? 0xFFAAAAAA : 0xFFFFFFFF);
+        if (!searchQuery.isEmpty()) { // クリアボタン (X)
+            WVCMod.INSTANCE.getFontRenderer().drawString("x", sx + sw - 15, sy + 5, 0xFF888888);
+        }
+
         WVCMod.INSTANCE.getFontRenderer().drawCenteredString("Edit HUD", ehX + ehW / 2, ehY + 6, 0xFFFFFFFF);
 
         int contentX = px;
@@ -290,9 +304,23 @@ public class WVCGuiSettings extends GuiScreen {
             }
         }
 
-        // Edit HUD button
-        if (mouseX >= px + PANEL_W - 95 && mouseY >= py + 12 && mouseY <= py + 34) {
-            field_146297_k.func_147108_a(new GuiEditHUD()); return;
+        // Search bar click
+        int searchW = 120; int searchH = 22;
+        int searchX = px + PANEL_W - 95 - searchW - 10;
+        if (mouseX >= searchX && mouseX <= searchX + searchW && mouseY >= py + 12 && mouseY <= py + 12 + searchH) {
+            listeningSearch = true;
+            if (mouseX >= searchX + searchW - 20 && !searchQuery.isEmpty()) searchQuery = ""; // Clear
+            return;
+        } else { listeningSearch = false; }
+
+        // Edit HUD button (右上に配置)
+        int ehW = 100; int ehH = 22;
+        int ehX = px + PANEL_W - ehW - 15;
+        int ehY = py + 12;
+        if (mouseX >= ehX && mouseX <= ehX + ehW && mouseY >= ehY && mouseY <= ehY + ehH) {
+            field_146297_k.func_147108_a(new GuiEditHUD());
+            field_146297_k.field_71439_g.func_85030_a("random.click", 0.5F, 1.0F);
+            return;
         }
 
         if (currentTab.equals("MODS")) {
@@ -434,16 +462,19 @@ public class WVCGuiSettings extends GuiScreen {
     private void disableScissor() { GL11.glDisable(GL11.GL_SCISSOR_TEST); }
     private List<WVCModule> getFilteredModules() {
         List<WVCModule> all = WVCMod.INSTANCE.getModuleManager().getModules();
-        if (selectedCategory.equals("ALL")) return all;
         List<WVCModule> res = new ArrayList<>();
-        for (WVCModule m : all) if (getCategoryLabel(m).equalsIgnoreCase(selectedCategory)) res.add(m);
+        for (WVCModule m : all) {
+            boolean catMatch = selectedCategory.equals("ALL") || getCategoryLabel(m).equalsIgnoreCase(selectedCategory);
+            boolean searchMatch = searchQuery.isEmpty() || m.getName().toLowerCase().contains(searchQuery.toLowerCase());
+            if (catMatch && searchMatch) res.add(m);
+        }
         return res;
     }
     private String getCategoryLabel(WVCModule m) {
         String n = m.getName();
         if (n.equals("Sprint") || n.equals("Zoom") || n.equals("ToggleSneak")) return "MOVEMENT";
-        if (n.equals("FPS") || n.equals("Ping") || n.equals("CPS") || n.equals("Keystrokes") || n.equals("ArmorStatus") || n.equals("PotionStatus") || n.equals("ReachDisplay") || n.equals("DirectionHUD") || n.equals("Bossbar") || n.equals("Scoreboard")) return "HUD";
-        if (n.equals("JapaneseIME") || n.equals("ScreenshotManager") || n.equals("ChatConfirmation") || n.equals("AutoText")) return "SYSTEM";
+        if (n.equals("FPS") || n.equals("Ping") || n.equals("CPS") || n.equals("Keystrokes") || n.equals("ArmorStatus") || n.equals("PotionStatus") || n.equals("ReachDisplay") || n.equals("DirectionHUD") || n.equals("Bossbar") || n.equals("Scoreboard") || n.equals("Location") || n.equals("TeamDisplay")) return "HUD";
+        if (n.equals("JapaneseIME") || n.equals("ScreenshotManager") || n.equals("ChatConfirmation") || n.equals("AutoText") || n.equals("ChatMOD")) return "SYSTEM";
         return "VISUAL";
     }
     private int adjustBrightness(int color, float factor) {
@@ -461,6 +492,16 @@ public class WVCGuiSettings extends GuiScreen {
         }
     }
     @Override protected void func_73869_a(char typedChar, int keyCode) throws IOException {
+        if (listeningSearch) {
+            if (keyCode == Keyboard.KEY_BACK) {
+                if (!searchQuery.isEmpty()) searchQuery = searchQuery.substring(0, searchQuery.length() - 1);
+            } else if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_ESCAPE) {
+                listeningSearch = false;
+            } else if (ChatAllowedCharacters.func_71566_a(typedChar)) {
+                searchQuery += typedChar;
+            }
+            return;
+        }
         if (listeningKeybind != null) {
             if (keyCode == Keyboard.KEY_ESCAPE) listeningKeybind.setKeyCode(0);
             else listeningKeybind.setKeyCode(keyCode);
