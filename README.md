@@ -1,8 +1,7 @@
 # 🌪️ Wind V Client
 **The Ultimate 1.8.9 Utility Client for the Modern PvP Experience.**
 
-[![Modrinth](https://img.shields.io/badge/Modrinth-Download-00AF5C?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/windv-client)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord)](https://discord.gg/your-link)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord)](https://discord.gg/UZSuVEGN)
 
 ---
 
