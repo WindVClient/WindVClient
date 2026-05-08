@@ -1,5 +1,5 @@
 Symbol range map extraction starting
-Processing 59 files
+Processing 61 files
 processing dev\windv\wvc\WVCMod.java
 processing dev\windv\wvc\config\WVCConfig.java
 processing dev\windv\wvc\event\InputEventHandler.java
@@ -10,6 +10,7 @@ processing dev\windv\wvc\event\RenderEventHandler.java
 processing dev\windv\wvc\gui\CustomGuiNewChat.java
 processing dev\windv\wvc\gui\GuiCrosshairEditor.java
 processing dev\windv\wvc\gui\GuiEditHUD.java
+processing dev\windv\wvc\gui\GuiOptiFineWarning.java
 processing dev\windv\wvc\gui\GuiWVCMainMenu.java
 processing dev\windv\wvc\gui\WVCGuiSettings.java
 processing dev\windv\wvc\module\ModuleManager.java
@@ -57,5 +58,6 @@ processing dev\windv\wvc\settings\KeybindSetting.java
 processing dev\windv\wvc\settings\ModeSetting.java
 processing dev\windv\wvc\settings\Setting.java
 processing dev\windv\wvc\settings\SliderSetting.java
+processing dev\windv\wvc\util\LanguageManager.java
 processing dev\windv\wvc\util\font\CFont.java
 processing dev\windv\wvc\util\font\CFontRenderer.java

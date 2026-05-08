@@ -34,6 +34,12 @@ public class WVCConfig {
     // 現在選択されているプロファイル名
     private String selectedProfile;
 
+    // OptiFine警告の表示設定
+    private boolean showOptiFineWarning;
+
+    // 言語設定 (en / jp)
+    private String language;
+
     public WVCConfig(File configFile) {
         config = new Configuration(configFile);
     }
@@ -63,6 +69,12 @@ public class WVCConfig {
             // プロファイル名
             selectedProfile = config.getString("selected_profile", "client", "Default", "現在選択されているプロファイル名");
 
+            // OptiFine警告表示
+            showOptiFineWarning = config.getBoolean("show_optifine_warning", "client", true, "OptiFineが未導入の際に警告を表示する");
+
+            // 言語設定
+            language = config.getString("language", "client", "en", "クライアントの表示言語 (en / jp)");
+
         } finally {
             if (config.hasChanged()) {
                 config.save();
@@ -83,6 +95,8 @@ public class WVCConfig {
         config.getCategory(CATEGORY_HUD).get("hud_opacity").set(hudOpacity);
         config.get("client", "theme_color", 0xFF0078D4).set(themeColor);
         config.get("client", "selected_profile", "Default").set(selectedProfile);
+        config.get("client", "show_optifine_warning", true).set(showOptiFineWarning);
+        config.get("client", "language", "jp").set(language);
         config.save();
     }
 
@@ -104,4 +118,10 @@ public class WVCConfig {
     public void setThemeColor(int v)      { themeColor = v; save(); }
     public String getSelectedProfile()    { return selectedProfile; }
     public void setSelectedProfile(String v) { selectedProfile = v; save(); }
+
+    public boolean isShowOptiFineWarning() { return showOptiFineWarning; }
+    public void setShowOptiFineWarning(boolean v) { showOptiFineWarning = v; save(); }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String v) { language = v; save(); }
 }

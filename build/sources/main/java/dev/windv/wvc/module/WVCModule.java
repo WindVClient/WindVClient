@@ -12,7 +12,7 @@ import java.util.List;
  */
 public abstract class WVCModule {
 
-    // モジュール名（表示用）
+    // モジュール名（内部識別用キー）
     private final String name;
 
     // 有効/無効フラグ
@@ -28,7 +28,7 @@ public abstract class WVCModule {
 
     /**
      * コンストラクタ
-     * @param name    モジュール名
+     * @param name    モジュール名 (内部キー)
      * @param enabled 初期状態（ON/OFF）
      */
     public WVCModule(String name, boolean enabled) {
@@ -56,7 +56,10 @@ public abstract class WVCModule {
     public KeybindSetting getKeybind() { return keybind; }
 
     // ゲッター / セッター
-    public String getName()    { return name; }
+    public String getName()    { 
+        // 日本語化は一旦保留とし、元の名前を返す
+        return name; 
+    }
     public boolean isEnabled() { return enabled; }
 
     public void setEnabled(boolean enabled) {

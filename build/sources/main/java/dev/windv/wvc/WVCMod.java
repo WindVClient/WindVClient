@@ -8,6 +8,11 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.gui.GuiMainMenu;
+import dev.windv.wvc.gui.GuiWVCMainMenu;
+import dev.windv.wvc.gui.GuiOptiFineWarning;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,6 +63,8 @@ public class WVCMod {
         config.load();
     }
 
+    private boolean optifineChecked = false;
+
     /**
      * 初期化フェーズ - モジュールの登録
      */
@@ -65,6 +72,8 @@ public class WVCMod {
     public void init(FMLInitializationEvent event) {
         // Initialize custom font (Tahoma is cleaner than Verdana)
         fontRenderer = new dev.windv.wvc.util.font.CFontRenderer(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 18), true, true);
+        
+        MinecraftForge.EVENT_BUS.register(this);
 
         moduleManager = new ModuleManager();
         moduleManager.registerModules();
@@ -105,5 +114,30 @@ public class WVCMod {
     // ゲッター
     public WVCConfig getConfig() { return config; }
     public ModuleManager getModuleManager() { return moduleManager; }
+    @SubscribeEvent
+    public void onGuiOpen(net.minecraftforge.client.event.GuiOpenEvent event) {
+        // メインメニューが開かれようとした時にチェック
+        if (!optifineChecked && (event.gui instanceof GuiMainMenu || event.gui instanceof GuiWVCMainMenu)) {
+            optifineChecked = true;
+            if (config.isShowOptiFineWarning() && !isOptiFineInstalled()) {
+                event.gui = new GuiOptiFineWarning();
+            }
+        }
+    }
+
+    private boolean isOptiFineInstalled() {
+        try {
+            Class.forName("net.optifine.Config");
+            return true;
+        } catch (ClassNotFoundException e) {
+            try {
+                Class.forName("Config"); // 旧バージョンや環境用
+                return true;
+            } catch (ClassNotFoundException e2) {
+                return false;
+            }
+        }
+    }
+
     public ProfileManager getProfileManager() { return profileManager; }
 }
